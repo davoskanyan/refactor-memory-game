@@ -20,20 +20,6 @@ const FADE_TRANSITION = 500;
 
 const boxColors = ["red", "blue", "green", "yellow"];
 
-const isPrefix = (largerArray, smallerArray) => {
-  return (
-    smallerArray.length <= largerArray.length &&
-    smallerArray.every((value, index) => value === largerArray[index])
-  );
-};
-
-const isSame = (firstArray, secondArray) => {
-  return (
-    secondArray.length === firstArray.length &&
-    secondArray.every((value, index) => value === firstArray[index])
-  );
-};
-
 const getRandomColor = () => {
   const randomIndex = Math.floor(Math.random() * boxColors.length);
   return boxColors[randomIndex];
@@ -47,7 +33,6 @@ function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const [clicksEnabled, setClicksEnabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [playerCombination, setPlayerCombination] = useState([]);
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(1);
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
@@ -55,19 +40,17 @@ function App() {
   const resetStates = () => {
     setClicksEnabled(false);
     setGameStarted(false);
-    setPlayerCombination([]);
     setGameCombination([]);
     setNumberOfRounds(1);
     setActiveBoxIndex(null);
   };
 
   const handleMove = (color) => {
-    const playerNewCombination = [...playerCombination, color];
-    setPlayerCombination(playerNewCombination);
-    const isCorrect = isPrefix(gameCombination, playerNewCombination);
+    const isCorrect = gameCombination[0] === color;
 
     if (isCorrect) {
-      const isEqual = isSame(gameCombination, playerNewCombination);
+      setGameCombination((previousCombination) => previousCombination.slice(1));
+      const isEqual = gameCombination.length === 1
       if (isEqual && gameCombination.length > 0) {
         const isGameEnd = numberOfRounds >= 10 ? true : false;
 
@@ -78,7 +61,6 @@ function App() {
           setNumberOfRounds(rounds);
           const colorCombination = generateCombination(rounds);
           setGameCombination(colorCombination);
-          setPlayerCombination([]);
           showGameCombination(colorCombination);
         }
       }
@@ -93,7 +75,6 @@ function App() {
     setNumberOfRounds(numberOfColors);
     const colorCombination = generateCombination(numberOfColors);
     setGameCombination(colorCombination);
-    setPlayerCombination([]);
     setGameStarted(true);
     setGameOver(false);
     await showGameCombination(colorCombination);
@@ -135,7 +116,7 @@ function App() {
     <div className="App">
       <div>
         {gameStarted && clicksEnabled
-          ? `Your Turn ${playerCombination.length}/${gameCombination.length}`
+          ? `Your Turn ${numberOfRounds - gameCombination.length}/${numberOfRounds}`
           : ""}
       </div>
       <div>{gameStarted && !clicksEnabled ? "Displaying Combination" : ""}</div>
