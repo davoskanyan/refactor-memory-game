@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const GameArea = styled.div`
@@ -44,7 +44,6 @@ function generateCombination(length) {
 }
 
 function App() {
-  const [moveCount, setMoveCount] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [clicksEnabled, setClicksEnabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -62,10 +61,13 @@ function App() {
     setActiveBoxIndex(null);
   };
 
-  useEffect(() => {
-    const isCorrect = isPrefix(gameCombination, playerCombination);
+  const handleMove = (color) => {
+    const playerNewCombination = [...playerCombination, color];
+    setPlayerCombination(playerNewCombination);
+    const isCorrect = isPrefix(gameCombination, playerNewCombination);
+
     if (isCorrect) {
-      const isEqual = isSame(gameCombination, playerCombination);
+      const isEqual = isSame(gameCombination, playerNewCombination);
       if (isEqual && gameCombination.length > 0) {
         const isGameEnd = numberOfRounds >= 10 ? true : false;
 
@@ -84,7 +86,7 @@ function App() {
       setGameOver(true);
       resetStates();
     }
-  }, [moveCount]);
+  };
 
   const startGame = async () => {
     const numberOfColors = numberOfRounds + 3;
@@ -119,9 +121,7 @@ function App() {
       return;
     }
     if (color) {
-      setPlayerCombination([...playerCombination, color]);
-      const count = moveCount + 1;
-      setMoveCount(count);
+      handleMove(color);
     }
 
     setActiveBoxIndex(index);
