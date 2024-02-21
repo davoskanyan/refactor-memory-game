@@ -51,7 +51,7 @@ function App() {
   const [playerCombination, setPlayerCombination] = useState([]);
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(1);
-  const [boxStates, setBoxStates] = useState([false, false, false, false]);
+  const [activeBoxIndex, setActiveBoxIndex] = useState(null);
 
   const resetStates = () => {
     setClicksEnabled(false);
@@ -59,7 +59,7 @@ function App() {
     setPlayerCombination([]);
     setGameCombination([]);
     setNumberOfRounds(1);
-    setBoxStates([false, false, false, false]);
+    setActiveBoxIndex(null);
   };
 
   useEffect(() => {
@@ -115,7 +115,7 @@ function App() {
   };
 
   const clickBox = (index, color) => {
-    if (boxStates[index]) {
+    if (index === activeBoxIndex) {
       return;
     }
     if (color) {
@@ -124,18 +124,10 @@ function App() {
       setMoveCount(count);
     }
 
-    setBoxStates((prevStates) => {
-      const newStates = [...prevStates];
-      newStates[index] = true;
-      return newStates;
-    });
+    setActiveBoxIndex(index);
 
     setTimeout(() => {
-      setBoxStates((prevStates) => {
-        const newStates = [...prevStates];
-        newStates[index] = false;
-        return newStates;
-      });
+      setActiveBoxIndex(null);
     }, FADE_TRANSITION);
   };
 
@@ -152,7 +144,7 @@ function App() {
       <GameArea isActive={gameStarted}>
         {boxColors.map((color, index) => (
           <Box
-            isActive={boxStates[index]}
+            isActive={index === activeBoxIndex}
             color={color}
             disabled={clicksEnabled}
             onClick={() => {
