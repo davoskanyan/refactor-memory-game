@@ -57,12 +57,8 @@ function App() {
   useEffect(() => {
     const isCorrect = isPrefix(gameCombination, playerCombination);
     if (isCorrect) {
-      console.log("isPrefix");
-      console.log(playerCombination);
-      console.log(gameCombination);
       const isEqual = isSame(gameCombination, playerCombination);
       if (isEqual && gameCombination.length > 0) {
-        console.log("isEqual");
         const isGameEnd = numberOfRounds >= 10 ? true : false;
 
         if (isGameEnd) {
@@ -77,9 +73,6 @@ function App() {
         }
       }
     } else {
-      console.log("game over");
-      console.log(playerCombination);
-      console.log(gameCombination);
       setGameOver(true);
       resetStates();
     }
@@ -95,7 +88,6 @@ function App() {
   }
 
   const startGame = async () => {
-    console.log("startGame");
     const numberOfColors = numberOfRounds + 3;
     setNumberOfRounds(numberOfColors);
     const colorCombination = generateCombination(numberOfColors);
@@ -103,8 +95,6 @@ function App() {
     setPlayerCombination([]);
     setGameStarted(true);
     setGameOver(false);
-    console.log(numberOfColors);
-    console.log(gameCombination);
     await showGameCombination(colorCombination);
   };
 
@@ -152,6 +142,12 @@ function App() {
 
   return (
     <div className="App">
+      <div>
+        {gameStarted && clicksEnabled
+          ? `Your Turn ${playerCombination.length}/${gameCombination.length}`
+          : ""}
+      </div>
+      <div>{gameStarted && !clicksEnabled ? "Displaying Combination" : ""}</div>
       <div>{gameOver ? "Game Over" : ""}</div>
       <div>{!gameStarted ? "Press Start Button" : ""}</div>
       <GameArea isActive={gameStarted}>
