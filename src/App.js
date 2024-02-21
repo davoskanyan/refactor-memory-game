@@ -18,8 +18,32 @@ const Box = styled.div`
 
 const FADE_TRANSITION = 500;
 
+const boxColors = ["red", "blue", "green", "yellow"];
+
+const isPrefix = (largerArray, smallerArray) => {
+  return (
+    smallerArray.length <= largerArray.length &&
+    smallerArray.every((value, index) => value === largerArray[index])
+  );
+};
+
+const isSame = (firstArray, secondArray) => {
+  return (
+    secondArray.length === firstArray.length &&
+    secondArray.every((value, index) => value === firstArray[index])
+  );
+};
+
+const getRandomColor = () => {
+  const randomIndex = Math.floor(Math.random() * boxColors.length);
+  return boxColors[randomIndex];
+};
+
+function generateCombination(length) {
+  return Array.from({ length }, () => getRandomColor());
+}
+
 function App() {
-  const boxColors = ["red", "blue", "green", "yellow"];
   const [moveCount, setMoveCount] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [clicksEnabled, setClicksEnabled] = useState(false);
@@ -28,22 +52,6 @@ function App() {
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(1);
   const [boxStates, setBoxStates] = useState([false, false, false, false]);
-
-  useEffect(() => {}, []);
-
-  const isPrefix = (largerArray, smallerArray) => {
-    return (
-      smallerArray.length <= largerArray.length &&
-      smallerArray.every((value, index) => value === largerArray[index])
-    );
-  };
-
-  const isSame = (firstArray, secondArray) => {
-    return (
-      secondArray.length === firstArray.length &&
-      secondArray.every((value, index) => value === firstArray[index])
-    );
-  };
 
   const resetStates = () => {
     setClicksEnabled(false);
@@ -77,15 +85,6 @@ function App() {
       resetStates();
     }
   }, [moveCount]);
-
-  const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * boxColors.length);
-    return boxColors[randomIndex];
-  };
-
-  function generateCombination(length) {
-    return Array.from({ length }, () => getRandomColor());
-  }
 
   const startGame = async () => {
     const numberOfColors = numberOfRounds + 3;
