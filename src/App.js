@@ -29,6 +29,10 @@ function generateCombination(length) {
   return Array.from({ length }, () => getRandomColor());
 }
 
+function wait(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 function App() {
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(4);
@@ -43,7 +47,10 @@ function App() {
     setActiveBoxIndex(null);
   };
 
-  const handleMove = (color) => {
+  const handleMove = async (color) => {
+    const colorIndex = boxColors.indexOf(color);
+    await performBoxTransition(colorIndex);
+
     const isCorrect = gameCombination[0] === color;
 
     if (isCorrect) {
@@ -78,16 +85,17 @@ function App() {
     setGameStatus("userTurn");
   };
 
+  async function performBoxTransition(index) {
+    setActiveBoxIndex(index);
+    await wait(FADE_TRANSITION);
+    setActiveBoxIndex(null);
+  }
+
   const showGameCombination = async (gameCombination) => {
     for (const color of gameCombination) {
       const index = boxColors.indexOf(color);
-
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          clickBox(index, false);
-          resolve();
-        }, 2 * FADE_TRANSITION);
-      });
+      await wait(FADE_TRANSITION);
+      await performBoxTransition(index);
     }
   };
 
@@ -95,15 +103,8 @@ function App() {
     if (index === activeBoxIndex) {
       return;
     }
-    if (color) {
-      handleMove(color);
-    }
 
-    setActiveBoxIndex(index);
-
-    setTimeout(() => {
-      setActiveBoxIndex(null);
-    }, FADE_TRANSITION);
+    handleMove(color);
   };
 
   const notStarted = gameStatus === "notStarted";
