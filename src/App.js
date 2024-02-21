@@ -30,16 +30,14 @@ function generateCombination(length) {
 }
 
 function App() {
-  const [gameStarted, setGameStarted] = useState(false);
-  const [clicksEnabled, setClicksEnabled] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(1);
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
 
+  // notStarted | displayingCombination | userTurn | gameOver
+  const [gameStatus, setGameStatus] = useState("notStarted");
+
   const resetStates = () => {
-    setClicksEnabled(false);
-    setGameStarted(false);
     setGameCombination([]);
     setNumberOfRounds(1);
     setActiveBoxIndex(null);
@@ -50,11 +48,12 @@ function App() {
 
     if (isCorrect) {
       setGameCombination((previousCombination) => previousCombination.slice(1));
-      const isEqual = gameCombination.length === 1
+      const isEqual = gameCombination.length === 1;
       if (isEqual && gameCombination.length > 0) {
         const isGameEnd = numberOfRounds >= 10 ? true : false;
 
         if (isGameEnd) {
+          setGameStatus("notStarted");
           resetStates();
         } else {
           const rounds = numberOfRounds + 1;
@@ -62,10 +61,11 @@ function App() {
           const colorCombination = generateCombination(rounds);
           setGameCombination(colorCombination);
           showGameCombination(colorCombination);
+          setGameStatus("userTurn");
         }
       }
     } else {
-      setGameOver(true);
+      setGameStatus("gameOver");
       resetStates();
     }
   };
@@ -75,14 +75,12 @@ function App() {
     setNumberOfRounds(numberOfColors);
     const colorCombination = generateCombination(numberOfColors);
     setGameCombination(colorCombination);
-    setGameStarted(true);
-    setGameOver(false);
+    setGameStatus("displayingCombination");
     await showGameCombination(colorCombination);
+    setGameStatus("userTurn");
   };
 
   const showGameCombination = async (gameCombination) => {
-    setClicksEnabled(false);
-
     for (const color of gameCombination) {
       const index = boxColors.indexOf(color);
 
@@ -93,8 +91,6 @@ function App() {
         }, 2 * FADE_TRANSITION);
       });
     }
-
-    setClicksEnabled(true);
   };
 
   const clickBox = (index, color) => {
@@ -112,29 +108,39 @@ function App() {
     }, FADE_TRANSITION);
   };
 
+  const notStarted = gameStatus === "notStarted";
+  const displayingCombination = gameStatus === "displayingCombination";
+  const userTurn = gameStatus === "userTurn";
+  const gameOver = gameStatus === "gameOver";
+
   return (
     <div className="App">
       <div>
-        {gameStarted && clicksEnabled
-          ? `Your Turn ${numberOfRounds - gameCombination.length}/${numberOfRounds}`
-          : ""}
+        {userTurn &&
+          `Your Turn ${
+            numberOfRounds - gameCombination.length
+          }/${numberOfRounds}`}
       </div>
-      <div>{gameStarted && !clicksEnabled ? "Displaying Combination" : ""}</div>
-      <div>{gameOver ? "Game Over" : ""}</div>
-      <div>{!gameStarted ? "Press Start Button" : ""}</div>
-      <GameArea isActive={gameStarted}>
+      <div>{displayingCombination && "Displaying Combination"}</div>
+      <div>{gameOver && "Game Over"}</div>
+      <div>{notStarted && "Press Start Button"}</div>
+      <GameArea>
         {boxColors.map((color, index) => (
           <Box
             isActive={index === activeBoxIndex}
             color={color}
-            disabled={clicksEnabled}
+            disabled={!userTurn}
             onClick={() => {
               clickBox(index, color);
             }}
           ></Box>
         ))}
       </GameArea>
-      <button type="button" disabled={gameStarted} onClick={startGame}>
+      <button
+        type="button"
+        disabled={userTurn || displayingCombination}
+        onClick={startGame}
+      >
         Start
       </button>
     </div>
