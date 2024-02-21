@@ -31,7 +31,7 @@ function generateCombination(length) {
 
 function App() {
   const [gameCombination, setGameCombination] = useState([]);
-  const [numberOfRounds, setNumberOfRounds] = useState(1);
+  const [numberOfRounds, setNumberOfRounds] = useState(4);
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
 
   // notStarted | displayingCombination | userTurn | gameOver
@@ -39,7 +39,7 @@ function App() {
 
   const resetStates = () => {
     setGameCombination([]);
-    setNumberOfRounds(1);
+    setNumberOfRounds(4);
     setActiveBoxIndex(null);
   };
 
@@ -50,7 +50,7 @@ function App() {
       setGameCombination((previousCombination) => previousCombination.slice(1));
       const isEqual = gameCombination.length === 1;
       if (isEqual && gameCombination.length > 0) {
-        const isGameEnd = numberOfRounds >= 10 ? true : false;
+        const isGameEnd = numberOfRounds >= 10;
 
         if (isGameEnd) {
           setGameStatus("notStarted");
@@ -71,9 +71,7 @@ function App() {
   };
 
   const startGame = async () => {
-    const numberOfColors = numberOfRounds + 3;
-    setNumberOfRounds(numberOfColors);
-    const colorCombination = generateCombination(numberOfColors);
+    const colorCombination = generateCombination(numberOfRounds);
     setGameCombination(colorCombination);
     setGameStatus("displayingCombination");
     await showGameCombination(colorCombination);
