@@ -7,13 +7,14 @@ const GameArea = styled.div`
   border: "1px solid black";
 `;
 
-const Box = styled.div`
+const Box = styled.button`
   width: 50%;
   height: 50%;
   background-color: ${(props) => props.color};
   text-align: center;
-  opacity: ${(props) => (props.isActive ? "50%" : "100%")};
+  opacity: ${(props) => (props.$isActive ? "50%" : "100%")};
   display: inline-block;
+  border: none;
 `;
 
 const FADE_TRANSITION = 500;
@@ -36,7 +37,7 @@ function wait(time) {
 function App() {
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(3);
-  const [activeBoxIndex, setActiveBoxIndex] = useState(null);
+  const [activeBoxColor, setActiveBoxColor] = useState(null);
 
   // notStarted | displayingCombination | userTurn | gameOver
   const [gameStatus, setGameStatus] = useState("notStarted");
@@ -56,15 +57,13 @@ function App() {
   const resetStates = () => {
     setGameCombination([]);
     setNumberOfRounds(3);
-    setActiveBoxIndex(null);
+    setActiveBoxColor(null);
   };
 
   const handleMove = async (color) => {
-    const colorIndex = boxColors.indexOf(color);
-    await performBoxTransition(colorIndex);
+    await performBoxTransition(color);
 
     const isCorrect = gameCombination[0] === color;
-
     if (isCorrect) {
       setGameCombination((previousCombination) => previousCombination.slice(1));
       const isEqual = gameCombination.length === 1;
@@ -84,26 +83,17 @@ function App() {
     }
   };
 
-  async function performBoxTransition(index) {
-    setActiveBoxIndex(index);
+  async function performBoxTransition(color) {
+    setActiveBoxColor(color);
     await wait(FADE_TRANSITION);
-    setActiveBoxIndex(null);
+    setActiveBoxColor(null);
   }
 
   const showGameCombination = async (gameCombination) => {
     for (const color of gameCombination) {
-      const index = boxColors.indexOf(color);
       await wait(FADE_TRANSITION);
-      await performBoxTransition(index);
+      await performBoxTransition(color);
     }
-  };
-
-  const clickBox = (index, color) => {
-    if (index === activeBoxIndex) {
-      return;
-    }
-
-    handleMove(color);
   };
 
   const notStarted = gameStatus === "notStarted";
@@ -123,14 +113,13 @@ function App() {
       <div>{gameOver && "Game Over"}</div>
       <div>{notStarted && "Press Start Button"}</div>
       <GameArea>
-        {boxColors.map((color, index) => (
+        {boxColors.map((color) => (
           <Box
-            isActive={index === activeBoxIndex}
+            key={color}
             color={color}
             disabled={!userTurn}
-            onClick={() => {
-              clickBox(index, color);
-            }}
+            onClick={() => handleMove(color)}
+            $isActive={color === activeBoxColor}
           ></Box>
         ))}
       </GameArea>
