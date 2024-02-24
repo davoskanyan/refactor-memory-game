@@ -35,15 +35,27 @@ function wait(time) {
 
 function App() {
   const [gameCombination, setGameCombination] = useState([]);
-  const [numberOfRounds, setNumberOfRounds] = useState(4);
+  const [numberOfRounds, setNumberOfRounds] = useState(3);
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
 
   // notStarted | displayingCombination | userTurn | gameOver
   const [gameStatus, setGameStatus] = useState("notStarted");
 
+  const startNextRound = async () => {
+    const nextNumberOfRounds = numberOfRounds + 1;
+    setNumberOfRounds(nextNumberOfRounds);
+
+    const nextCombination = generateCombination(nextNumberOfRounds);
+    setGameCombination(nextCombination);
+
+    setGameStatus("displayingCombination");
+    await showGameCombination(nextCombination);
+    setGameStatus("userTurn");
+  };
+
   const resetStates = () => {
     setGameCombination([]);
-    setNumberOfRounds(4);
+    setNumberOfRounds(3);
     setActiveBoxIndex(null);
   };
 
@@ -63,26 +75,13 @@ function App() {
           setGameStatus("notStarted");
           resetStates();
         } else {
-          const rounds = numberOfRounds + 1;
-          setNumberOfRounds(rounds);
-          const colorCombination = generateCombination(rounds);
-          setGameCombination(colorCombination);
-          showGameCombination(colorCombination);
-          setGameStatus("userTurn");
+          startNextRound();
         }
       }
     } else {
       setGameStatus("gameOver");
       resetStates();
     }
-  };
-
-  const startGame = async () => {
-    const colorCombination = generateCombination(numberOfRounds);
-    setGameCombination(colorCombination);
-    setGameStatus("displayingCombination");
-    await showGameCombination(colorCombination);
-    setGameStatus("userTurn");
   };
 
   async function performBoxTransition(index) {
@@ -138,7 +137,7 @@ function App() {
       <button
         type="button"
         disabled={userTurn || displayingCombination}
-        onClick={startGame}
+        onClick={startNextRound}
       >
         Start
       </button>
