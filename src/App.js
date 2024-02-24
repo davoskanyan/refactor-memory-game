@@ -54,32 +54,31 @@ function App() {
     setGameStatus("userTurn");
   };
 
-  const resetStates = () => {
+  const finishGame = () => {
+    setGameStatus("gameOver");
     setGameCombination([]);
     setNumberOfRounds(3);
-    setActiveBoxColor(null);
   };
 
   const handleMove = async (color) => {
     await performBoxTransition(color);
 
     const isCorrect = gameCombination[0] === color;
-    if (isCorrect) {
-      setGameCombination((previousCombination) => previousCombination.slice(1));
-      const isEqual = gameCombination.length === 1;
-      if (isEqual && gameCombination.length > 0) {
-        const isGameEnd = numberOfRounds >= 10;
+    if (!isCorrect) {
+      finishGame();
+      return;
+    }
 
-        if (isGameEnd) {
-          setGameStatus("notStarted");
-          resetStates();
-        } else {
-          startNextRound();
-        }
-      }
-    } else {
-      setGameStatus("gameOver");
-      resetStates();
+    setGameCombination((previousCombination) => previousCombination.slice(1));
+    const wasLastMove = gameCombination.length === 1;
+    if (wasLastMove) {
+      startNextRound();
+      return;
+    }
+
+    const isGameFinished = numberOfRounds >= 10;
+    if (isGameFinished) {
+      finishGame();
     }
   };
 
