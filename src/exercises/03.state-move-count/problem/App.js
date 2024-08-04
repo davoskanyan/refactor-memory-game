@@ -3,6 +3,9 @@ import { Box, GameArea } from "./components";
 import { isPrefix, isSame, generateCombination, boxColors, FADE_TRANSITION } from "./utils";
 
 function App() {
+  /**
+   * ✨ After making the changes below, you should be able to remove the `moveCount` state.
+   */
   const [moveCount, setMoveCount] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [clicksEnabled, setClicksEnabled] = useState(false);
@@ -21,6 +24,9 @@ function App() {
     setActiveBoxIndex(null);
   };
 
+  /**
+   * ✨ Convert this effect into a function that will be called when the player clicks a box.
+   */
   useEffect(() => {
     const isCorrect = isPrefix(gameCombination, playerCombination);
     if (isCorrect) {
@@ -80,6 +86,9 @@ function App() {
     if (color) {
       setPlayerCombination([...playerCombination, color]);
       const count = moveCount + 1;
+      /**
+       * ✨ Instead of updating the `moveCount` state to trigger the effect, call the function directly from here.
+       */
       setMoveCount(count);
     }
 
