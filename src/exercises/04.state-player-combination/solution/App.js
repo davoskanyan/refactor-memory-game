@@ -1,15 +1,11 @@
 import { useState } from "react";
 import { Box, GameArea } from "./components";
-import { isPrefix, isSame, generateCombination, boxColors, FADE_TRANSITION } from "./utils";
+import { generateCombination, boxColors, FADE_TRANSITION } from "./utils";
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const [clicksEnabled, setClicksEnabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  /**
-   * ✨ After making the changes below, you should be able to remove the `playerCombination` state and all the usages.
-   */
-  const [playerCombination, setPlayerCombination] = useState([]);
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(1);
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
@@ -17,23 +13,17 @@ function App() {
   const resetStates = () => {
     setClicksEnabled(false);
     setGameStarted(false);
-    setPlayerCombination([]);
     setGameCombination([]);
     setNumberOfRounds(1);
     setActiveBoxIndex(null);
   };
 
   const handleMove = (color) => {
-    const playerNewCombination = [...playerCombination, color];
-    setPlayerCombination(playerNewCombination);
-    /**
-     * ✨ To check if the predicted color is correct, compare the first element of the `gameCombination` array with the
-     * `color` argument. After that, update the `gameCombination` array.
-     */
-    const isCorrect = isPrefix(gameCombination, playerNewCombination);
+    const isCorrect = gameCombination[0] === color;
 
     if (isCorrect) {
-      const isEqual = isSame(gameCombination, playerNewCombination);
+      setGameCombination((previousCombination) => previousCombination.slice(1));
+      const isEqual = gameCombination.length === 1;
       if (isEqual && gameCombination.length > 0) {
         const isGameEnd = numberOfRounds >= 10 ? true : false;
 
@@ -44,7 +34,6 @@ function App() {
           setNumberOfRounds(rounds);
           const colorCombination = generateCombination(rounds);
           setGameCombination(colorCombination);
-          setPlayerCombination([]);
           showGameCombination(colorCombination);
         }
       }
@@ -59,7 +48,6 @@ function App() {
     setNumberOfRounds(numberOfColors);
     const colorCombination = generateCombination(numberOfColors);
     setGameCombination(colorCombination);
-    setPlayerCombination([]);
     setGameStarted(true);
     setGameOver(false);
     await showGameCombination(colorCombination);
@@ -101,8 +89,7 @@ function App() {
     <div className="App">
       <div>
         {gameStarted && clicksEnabled
-          // ✨ Use the `numberOfRounds` state together with `gameCombination` instead of `playerCombination`.
-          ? `Your Turn ${playerCombination.length}/${gameCombination.length}`
+          ? `Your Turn ${numberOfRounds - gameCombination.length}/${numberOfRounds}`
           : ""}
       </div>
       <div>{gameStarted && !clicksEnabled ? "Displaying Combination" : ""}</div>
