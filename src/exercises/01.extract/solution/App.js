@@ -1,31 +1,8 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-
-/**
- * ✨Move all components, utilities, and constants to separate files.
- */
-const GameArea = styled.div`
-    height: 200px;
-    width: 100px;
-    border: "1px solid black";
-`;
-
-const Box = styled.div`
-    width: 50%;
-    height: 50%;
-    background-color: ${(props) => props.color};
-    text-align: center;
-    opacity: ${(props) => (props.isActive ? "50%" : "100%")};
-    display: inline-block;
-`;
-
-const FADE_TRANSITION = 500;
+import { useState, useEffect } from "react";
+import { Box, GameArea } from "./components";
+import { isPrefix, isSame, generateCombination, boxColors, FADE_TRANSITION } from "./utils";
 
 function App() {
-  /**
-   * ✨Look for constants and functions that can be separated within this component as well.
-   */
-  const boxColors = ["red", "blue", "green", "yellow"];
   const [moveCount, setMoveCount] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [clicksEnabled, setClicksEnabled] = useState(false);
@@ -34,23 +11,6 @@ function App() {
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(1);
   const [boxStates, setBoxStates] = useState([false, false, false, false]);
-
-  useEffect(() => {
-  }, []);
-
-  const isPrefix = (largerArray, smallerArray) => {
-    return (
-      smallerArray.length <= largerArray.length &&
-      smallerArray.every((value, index) => value === largerArray[index])
-    );
-  };
-
-  const isSame = (firstArray, secondArray) => {
-    return (
-      secondArray.length === firstArray.length &&
-      secondArray.every((value, index) => value === firstArray[index])
-    );
-  };
 
   const resetStates = () => {
     setClicksEnabled(false);
@@ -84,15 +44,6 @@ function App() {
       resetStates();
     }
   }, [moveCount]);
-
-  const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * boxColors.length);
-    return boxColors[randomIndex];
-  };
-
-  function generateCombination(length) {
-    return Array.from({ length }, () => getRandomColor());
-  }
 
   const startGame = async () => {
     const numberOfColors = numberOfRounds + 3;
