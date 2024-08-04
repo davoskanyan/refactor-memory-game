@@ -4,6 +4,8 @@ import StateActiveIndexProblem from "./exercises/02.state-active-index/problem";
 import StateActiveIndexSolution from "./exercises/02.state-active-index/solution";
 import StateMoveCountProblem from "./exercises/03.state-move-count/problem";
 import StateMoveCountSolution from "./exercises/03.state-move-count/solution";
+import StatePlayerCombinationProblem from "./exercises/04.state-player-combination/problem";
+import StatePlayerCombinationSolution from "./exercises/04.state-player-combination/solution";
 
 const examples = [
   {
@@ -35,6 +37,16 @@ const examples = [
     name: "03.State (move count) - Solution",
     url: "03.state-move-count/solution",
     Component: StateMoveCountSolution
+  },
+  {
+    name: "04.State (player combination) - Problem",
+    url: "04.state-player-combination/problem",
+    Component: StatePlayerCombinationProblem
+  },
+  {
+    name: "04.State (player combination) - Solution",
+    url: "04.state-player-combination/solution",
+    Component: StatePlayerCombinationSolution
   },
 ];
 
