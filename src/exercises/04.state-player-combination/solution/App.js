@@ -6,6 +6,9 @@ function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const [clicksEnabled, setClicksEnabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  /**
+   * ✨ After making the changes below, you should be able to remove the `playerCombination` state and all the usages.
+   */
   const [playerCombination, setPlayerCombination] = useState([]);
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(1);
@@ -23,6 +26,10 @@ function App() {
   const handleMove = (color) => {
     const playerNewCombination = [...playerCombination, color];
     setPlayerCombination(playerNewCombination);
+    /**
+     * ✨ To check if the predicted color is correct, compare the first element of the `gameCombination` array with the
+     * `color` argument. After that, update the `gameCombination` array.
+     */
     const isCorrect = isPrefix(gameCombination, playerNewCombination);
 
     if (isCorrect) {
@@ -94,6 +101,7 @@ function App() {
     <div className="App">
       <div>
         {gameStarted && clicksEnabled
+          // ✨ Use the `numberOfRounds` state together with `gameCombination` instead of `playerCombination`.
           ? `Your Turn ${playerCombination.length}/${gameCombination.length}`
           : ""}
       </div>
