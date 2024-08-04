@@ -1,5 +1,0 @@
-# Installation
-
-```bash
-  yarn install
-```
