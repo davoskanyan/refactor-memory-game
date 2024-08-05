@@ -4,23 +4,15 @@ import { generateCombination, boxColors, FADE_TRANSITION } from "./utils";
 
 function App() {
   /**
-   * ✨ Replace the next three states with a single `gameStatus` state.
-   * The `gameStatus` state should be a string with the following possible values: "notStarted", "displayingCombination", "userTurn", "gameOver".
+   * This state can have one of the following values:
+   * "notStarted", "displayingCombination", "userTurn", "gameOver"
    */
-  const [gameStarted, setGameStarted] = useState(false);
-  const [clicksEnabled, setClicksEnabled] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
+  const [gameStatus, setGameStatus] = useState("notStarted");
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(1);
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
 
-  /**
-   * ✨ The `resetStates` function is called from different flows.
-   * Instead of setting the game status here, set it before or after calling this function.
-   */
   const resetStates = () => {
-    setClicksEnabled(false);
-    setGameStarted(false);
     setGameCombination([]);
     setNumberOfRounds(1);
     setActiveBoxIndex(null);
@@ -36,6 +28,7 @@ function App() {
         const isGameEnd = numberOfRounds >= 10 ? true : false;
 
         if (isGameEnd) {
+          setGameStatus("notStarted");
           resetStates();
         } else {
           const rounds = numberOfRounds + 1;
@@ -46,28 +39,21 @@ function App() {
         }
       }
     } else {
-      setGameOver(true);
+      setGameStatus("gameOver");
       resetStates();
     }
   };
-
-  /**
-   * ✨ Understand the code and update the `gameStatus` state at appropriate places.
-   * Ensure the game logic remains correct.
-   */
 
   const startGame = async () => {
     const numberOfColors = numberOfRounds + 3;
     setNumberOfRounds(numberOfColors);
     const colorCombination = generateCombination(numberOfColors);
     setGameCombination(colorCombination);
-    setGameStarted(true);
-    setGameOver(false);
     await showGameCombination(colorCombination);
   };
 
   const showGameCombination = async (gameCombination) => {
-    setClicksEnabled(false);
+    setGameStatus("displayingCombination");
 
     for (const color of gameCombination) {
       const index = boxColors.indexOf(color);
@@ -80,7 +66,7 @@ function App() {
       });
     }
 
-    setClicksEnabled(true);
+    setGameStatus("userTurn");
   };
 
   const clickBox = (index, color) => {
@@ -98,38 +84,39 @@ function App() {
     }, FADE_TRANSITION);
   };
 
-  /**
-   * ✨ To keep the JSX clean, you can create a boolean variable for each game status:
-   *
-   * const isNotStarted = gameStatus === "notStarted";
-   * const isDisplayingCombination = gameStatus === "displayingCombination";
-   * const isUserTurn = gameStatus === "userTurn";
-   * const isGameOver = gameStatus === "gameOver";
-   */
+  const isNotStarted = gameStatus === "notStarted";
+  const isDisplayingCombination = gameStatus === "displayingCombination";
+  const isUserTurn = gameStatus === "userTurn";
+  const isGameOver = gameStatus === "gameOver";
 
   return (
     <div className="App">
       <div>
-        {gameStarted && clicksEnabled
-          ? `Your Turn ${numberOfRounds - gameCombination.length}/${numberOfRounds}`
-          : ""}
+        {isUserTurn &&
+          `Your Turn ${
+            numberOfRounds - gameCombination.length
+          }/${numberOfRounds}`}
       </div>
-      <div>{gameStarted && !clicksEnabled ? "Displaying Combination" : ""}</div>
-      <div>{gameOver ? "Game Over" : ""}</div>
-      <div>{!gameStarted ? "Press Start Button" : ""}</div>
-      <GameArea isActive={gameStarted}>
+      <div>{isDisplayingCombination && "Displaying Combination"}</div>
+      <div>{isGameOver && "Game Over"}</div>
+      <div>{isNotStarted && "Press Start Button"}</div>
+      <GameArea>
         {boxColors.map((color, index) => (
           <Box
             isActive={index === activeBoxIndex}
             color={color}
-            disabled={clicksEnabled}
+            disabled={!isUserTurn}
             onClick={() => {
               clickBox(index, color);
             }}
           ></Box>
         ))}
       </GameArea>
-      <button type="button" disabled={gameStarted} onClick={startGame}>
+      <button
+        type="button"
+        disabled={isUserTurn || isDisplayingCombination}
+        onClick={startGame}
+      >
         Start
       </button>
     </div>
