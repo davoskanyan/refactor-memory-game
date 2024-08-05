@@ -8,6 +8,8 @@ import StatePlayerCombinationProblem from "./exercises/04.state-player-combinati
 import StatePlayerCombinationSolution from "./exercises/04.state-player-combination/solution";
 import StateGameStatusProblem from "./exercises/05.state-game-status/problem";
 import StateGameStatusSolution from "./exercises/05.state-game-status/solution";
+import StateNumberOfRoundsProblem from "./exercises/06.state-number-of-rounds/problem";
+import StateNumberOfRoundsSolution from "./exercises/06.state-number-of-rounds/solution";
 
 const examples = [
   {
@@ -59,6 +61,16 @@ const examples = [
     name: "05.State (game status) - Solution",
     url: "05.state-game-status/solution",
     Component: StateGameStatusSolution
+  },
+  {
+    name: "06.State (number of rounds) - Problem",
+    url: "06.state-number-of-rounds/problem",
+    Component: StateNumberOfRoundsProblem
+  },
+  {
+    name: "06.State (number of rounds) - Solution",
+    url: "06.state-number-of-rounds/solution",
+    Component: StateNumberOfRoundsSolution
   },
 ];
 
