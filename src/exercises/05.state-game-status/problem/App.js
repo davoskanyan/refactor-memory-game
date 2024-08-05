@@ -3,6 +3,10 @@ import { Box, GameArea } from "./components";
 import { generateCombination, boxColors, FADE_TRANSITION } from "./utils";
 
 function App() {
+  /**
+   * ✨ Replace the next three states with a single `gameStatus` state.
+   * The `gameStatus` state should be a string with the following possible values: "notStarted", "displayingCombination", "userTurn", "gameOver".
+   */
   const [gameStarted, setGameStarted] = useState(false);
   const [clicksEnabled, setClicksEnabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -10,6 +14,10 @@ function App() {
   const [numberOfRounds, setNumberOfRounds] = useState(1);
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
 
+  /**
+   * ✨ The `resetStates` function is called from different flows.
+   * Instead of setting the game status here, set it before or after calling this function.
+   */
   const resetStates = () => {
     setClicksEnabled(false);
     setGameStarted(false);
@@ -42,6 +50,11 @@ function App() {
       resetStates();
     }
   };
+
+  /**
+   * ✨ Understand the code and update the `gameStatus` state at appropriate places.
+   * Ensure the game logic remains correct.
+   */
 
   const startGame = async () => {
     const numberOfColors = numberOfRounds + 3;
@@ -84,6 +97,15 @@ function App() {
       setActiveBoxIndex(null);
     }, FADE_TRANSITION);
   };
+
+  /**
+   * ✨ To keep the JSX clean, you can create a boolean variable for each game status:
+   *
+   * const isNotStarted = gameStatus === "notStarted";
+   * const isDisplayingCombination = gameStatus === "displayingCombination";
+   * const isUserTurn = gameStatus === "userTurn";
+   * const isGameOver = gameStatus === "gameOver";
+   */
 
   return (
     <div className="App">
