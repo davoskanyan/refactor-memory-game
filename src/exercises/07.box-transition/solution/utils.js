@@ -14,3 +14,7 @@ const getRandomColor = () => {
 export function generateCombination(length) {
   return Array.from({ length }, () => getRandomColor());
 }
+
+export function wait(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
