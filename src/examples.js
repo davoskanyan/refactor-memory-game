@@ -12,6 +12,8 @@ import StateNumberOfRoundsProblem from "./exercises/06.state-number-of-rounds/pr
 import StateNumberOfRoundsSolution from "./exercises/06.state-number-of-rounds/solution";
 import BoxTransitionProblem from "./exercises/07.box-transition/problem";
 import BoxTransitionSolution from "./exercises/07.box-transition/solution";
+import StartNextRoundProblem from "./exercises/08.start-next-round/problem";
+import StartNextRoundSolution from "./exercises/08.start-next-round/solution";
 
 const examples = [
   {
@@ -83,6 +85,16 @@ const examples = [
     name: "07.Box Transition - Solution",
     url: "07.box-transition/solution",
     Component: BoxTransitionSolution
+  },
+  {
+    name: "08.Start Next Round - Problem",
+    url: "08.start-next-round/problem",
+    Component: StartNextRoundProblem
+  },
+  {
+    name: "08.Start Next Round - Solution",
+    url: "08.start-next-round/solution",
+    Component: StartNextRoundSolution
   },
 ];
 
