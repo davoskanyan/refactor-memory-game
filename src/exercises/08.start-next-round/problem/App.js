@@ -18,6 +18,11 @@ function App() {
     setActiveBoxIndex(null);
   };
 
+  /**
+   * ✨ Create a new function called `startNextRound` that increments the number of rounds by 1,
+   * generates a new combination, and displays the animation.
+   */
+
   async function performBoxTransition(index) {
     setActiveBoxIndex(index);
     await wait(FADE_TRANSITION);
@@ -37,6 +42,9 @@ function App() {
           setGameStatus("notStarted");
           resetStates();
         } else {
+          /**
+           * ✨ Use the `startNextRound` function here to start the next round instead of the next few lines.
+           */
           const rounds = numberOfRounds + 1;
           setNumberOfRounds(rounds);
           const colorCombination = generateCombination(rounds);
@@ -50,6 +58,9 @@ function App() {
     }
   };
 
+  /**
+   * ✨ The `startNextRound` function handles starting a new game. Remove this function.
+   */
   const startGame = async () => {
     setNumberOfRounds(INITIAL_NUMBER_OF_ROUNDS);
     const colorCombination = generateCombination(INITIAL_NUMBER_OF_ROUNDS);
