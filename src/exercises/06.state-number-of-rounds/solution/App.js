@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { Box, GameArea } from "./components";
-/**
- * ✨ Create and import constants INITIAL_NUMBER_OF_ROUNDS and MAX_NUMBER_OF_ROUNDS from utils
- */
-import { generateCombination, boxColors, FADE_TRANSITION } from "./utils";
+import { generateCombination, boxColors, FADE_TRANSITION, INITIAL_NUMBER_OF_ROUNDS, MAX_NUMBER_OF_ROUNDS } from "./utils";
 
 function App() {
   /**
@@ -12,18 +9,12 @@ function App() {
    */
   const [gameStatus, setGameStatus] = useState("notStarted");
   const [gameCombination, setGameCombination] = useState([]);
-  /**
-   * ✨ Set the initial value of `numberOfRounds` state to `null` before the game starts.
-   */
-  const [numberOfRounds, setNumberOfRounds] = useState(1);
+  const [numberOfRounds, setNumberOfRounds] = useState(null);
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
 
   const resetStates = () => {
     setGameCombination([]);
-    /**
-     * ✨ Reset the initial value of `numberOfRounds`.
-     */
-    setNumberOfRounds(1);
+    setNumberOfRounds(null);
     setActiveBoxIndex(null);
   };
 
@@ -34,10 +25,7 @@ function App() {
       setGameCombination((previousCombination) => previousCombination.slice(1));
       const isEqual = gameCombination.length === 1;
       if (isEqual && gameCombination.length > 0) {
-        /**
-         * ✨ Use the MAX_NUMBER_OF_ROUNDS constant.
-         */
-        const isGameEnd = numberOfRounds >= 10 ? true : false;
+        const isGameEnd = numberOfRounds >= MAX_NUMBER_OF_ROUNDS;
 
         if (isGameEnd) {
           setGameStatus("notStarted");
@@ -57,12 +45,8 @@ function App() {
   };
 
   const startGame = async () => {
-    const numberOfColors = numberOfRounds + 3;
-    /**
-     * ✨ Set the INITIAL_NUMBER_OF_ROUNDS when the game starts.
-     */
-    setNumberOfRounds(numberOfColors);
-    const colorCombination = generateCombination(numberOfColors);
+    setNumberOfRounds(INITIAL_NUMBER_OF_ROUNDS);
+    const colorCombination = generateCombination(INITIAL_NUMBER_OF_ROUNDS);
     setGameCombination(colorCombination);
     await showGameCombination(colorCombination);
   };
