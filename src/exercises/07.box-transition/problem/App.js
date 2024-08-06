@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Box, GameArea } from "./components";
+/**
+ * ✨ Create and import a `wait` function in the `utils` module that takes a `time` parameter and returns a promise that
+ * resolves after the provided `time` in milliseconds.
+ */
 import { generateCombination, boxColors, FADE_TRANSITION, INITIAL_NUMBER_OF_ROUNDS, MAX_NUMBER_OF_ROUNDS } from "./utils";
 
 function App() {
@@ -17,6 +21,12 @@ function App() {
     setNumberOfRounds(null);
     setActiveBoxIndex(null);
   };
+
+  /**
+   * ✨ Create a `performBoxTransition` async function that takes an `index` parameter.
+   * It should set the active box index to the provided `index`, wait for the fade transition time, and then set the
+   * active box index to `null`.
+   */
 
   const handleMove = (color) => {
     const isCorrect = gameCombination[0] === color;
@@ -57,6 +67,9 @@ function App() {
     for (const color of gameCombination) {
       const index = boxColors.indexOf(color);
 
+      /**
+       * ✨ Simplify this using the `performBoxTransition` function to handle the box transition logic.
+       */
       await new Promise((resolve) => {
         setTimeout(() => {
           clickBox(index, false);
@@ -76,6 +89,10 @@ function App() {
       handleMove(color);
     }
 
+    /**
+     * ✨ Call the `performBoxTransition` function here. Ensure the transition completes before calling the `handleMove`
+     * function.
+     */
     setActiveBoxIndex(index);
 
     setTimeout(() => {
