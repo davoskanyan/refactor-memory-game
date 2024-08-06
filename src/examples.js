@@ -10,6 +10,8 @@ import StateGameStatusProblem from "./exercises/05.state-game-status/problem";
 import StateGameStatusSolution from "./exercises/05.state-game-status/solution";
 import StateNumberOfRoundsProblem from "./exercises/06.state-number-of-rounds/problem";
 import StateNumberOfRoundsSolution from "./exercises/06.state-number-of-rounds/solution";
+import BoxTransitionProblem from "./exercises/07.box-transition/problem";
+import BoxTransitionSolution from "./exercises/07.box-transition/solution";
 
 const examples = [
   {
@@ -71,6 +73,16 @@ const examples = [
     name: "06.State (number of rounds) - Solution",
     url: "06.state-number-of-rounds/solution",
     Component: StateNumberOfRoundsSolution
+  },
+  {
+    name: "07.Box Transition - Problem",
+    url: "07.box-transition/problem",
+    Component: BoxTransitionProblem
+  },
+  {
+    name: "07.Box Transition - Solution",
+    url: "07.box-transition/solution",
+    Component: BoxTransitionSolution
   },
 ];
 
