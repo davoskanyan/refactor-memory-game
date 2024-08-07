@@ -45,6 +45,13 @@ function App() {
     await performBoxTransition(color);
     const isCorrect = gameCombination[0] === color;
 
+    /**
+     * ✨ Use early return to simplify this function.
+     *
+     * - If the move is not correct, the game is over,
+     * - If it was the last move of the round, start the next round,
+     * - If it is the last round, finish the game.
+     */
     if (isCorrect) {
       setGameCombination((previousCombination) => previousCombination.slice(1));
       const isEqual = gameCombination.length === 1;
