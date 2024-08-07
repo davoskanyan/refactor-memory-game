@@ -14,6 +14,8 @@ import BoxTransitionProblem from "./exercises/07.box-transition/problem";
 import BoxTransitionSolution from "./exercises/07.box-transition/solution";
 import StartNextRoundProblem from "./exercises/08.start-next-round/problem";
 import StartNextRoundSolution from "./exercises/08.start-next-round/solution";
+import ActiveBoxColorProblem from "./exercises/09.active-box-color/problem";
+import ActiveBoxColorSolution from "./exercises/09.active-box-color/solution";
 
 const examples = [
   {
@@ -95,6 +97,16 @@ const examples = [
     name: "08.Start Next Round - Solution",
     url: "08.start-next-round/solution",
     Component: StartNextRoundSolution
+  },
+  {
+    name: "09.Active Box Color - Problem",
+    url: "09.active-box-color/problem",
+    Component: ActiveBoxColorProblem
+  },
+  {
+    name: "09.Active Box Color - Solution",
+    url: "09.active-box-color/solution",
+    Component: ActiveBoxColorSolution
   },
 ];
 
