@@ -19,12 +19,6 @@ function App() {
   const [numberOfRounds, setNumberOfRounds] = useState(null);
   const [activeBoxColor, setActiveBoxColor] = useState(null);
 
-  const resetStates = () => {
-    setGameCombination([]);
-    setNumberOfRounds(null);
-    setActiveBoxColor(null);
-  };
-
   const startNextRound = async () => {
     const newNumberOfRounds = numberOfRounds ? numberOfRounds + 1 : INITIAL_NUMBER_OF_ROUNDS;
     setNumberOfRounds(newNumberOfRounds);
@@ -43,31 +37,23 @@ function App() {
 
   const handleMove = async (color) => {
     await performBoxTransition(color);
+
     const isCorrect = gameCombination[0] === color;
-
-    /**
-     * ✨ Use early return to simplify this function.
-     *
-     * - If the move is not correct, the game is over,
-     * - If it was the last move of the round, start the next round,
-     * - If it is the last round, finish the game.
-     */
-    if (isCorrect) {
-      setGameCombination((previousCombination) => previousCombination.slice(1));
-      const isEqual = gameCombination.length === 1;
-      if (isEqual && gameCombination.length > 0) {
-        const isGameEnd = numberOfRounds >= MAX_NUMBER_OF_ROUNDS;
-
-        if (isGameEnd) {
-          setGameStatus("notStarted");
-          resetStates();
-        } else {
-          startNextRound();
-        }
-      }
-    } else {
+    if (!isCorrect) {
       setGameStatus("gameOver");
-      resetStates();
+      return;
+    }
+
+    setGameCombination((previousCombination) => previousCombination.slice(1));
+    const wasLastMove = gameCombination.length === 1;
+    if (wasLastMove) {
+      startNextRound();
+      return;
+    }
+
+    const isGameFinished = numberOfRounds >= MAX_NUMBER_OF_ROUNDS;
+    if (isGameFinished) {
+      setGameStatus("gameOver");
     }
   };
 
