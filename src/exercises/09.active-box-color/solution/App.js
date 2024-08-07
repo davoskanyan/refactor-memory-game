@@ -17,15 +17,12 @@ function App() {
   const [gameStatus, setGameStatus] = useState("notStarted");
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(null);
-  /**
-   * ✨ Instead of storing the index of the active box, store the color in `activeBoxColor` state.
-   */
-  const [activeBoxIndex, setActiveBoxIndex] = useState(null);
+  const [activeBoxColor, setActiveBoxColor] = useState(null);
 
   const resetStates = () => {
     setGameCombination([]);
     setNumberOfRounds(null);
-    setActiveBoxIndex(null);
+    setActiveBoxColor(null);
   };
 
   const startNextRound = async () => {
@@ -38,16 +35,14 @@ function App() {
     await showGameCombination(nextCombination);
   };
 
-  /**
-   * ✨ This function should receive the color of the box to be activated.
-   */
-  async function performBoxTransition(index) {
-    setActiveBoxIndex(index);
+  async function performBoxTransition(color) {
+    setActiveBoxColor(color);
     await wait(FADE_TRANSITION);
-    setActiveBoxIndex(null);
+    setActiveBoxColor(null);
   }
 
-  const handleMove = (color) => {
+  const handleMove = async (color) => {
+    await performBoxTransition(color);
     const isCorrect = gameCombination[0] === color;
 
     if (isCorrect) {
@@ -73,34 +68,11 @@ function App() {
     setGameStatus("displayingCombination");
 
     for (const color of gameCombination) {
-      const index = boxColors.indexOf(color);
       await wait(FADE_TRANSITION);
-      await performBoxTransition(index);
+      await performBoxTransition(color);
     }
 
     setGameStatus("userTurn");
-  };
-
-  const clickBox = async (index, color) => {
-    if (index === activeBoxIndex) {
-      return;
-    }
-
-    /**
-     * ✨ No need for the colorIndex variable anymore.
-     */
-    const colorIndex = boxColors.indexOf(color);
-
-    /**
-     * ✨ The `clickBox` function shows the transition of the box and then calls the `handleMove` function. All the
-     * other checks are not needed anymore. Move this line to the top of `handleMove` function and after that remove
-     * `clickBox` function and call the `handleMove` function directly.
-     */
-    await performBoxTransition(colorIndex);
-
-    if (color) {
-      handleMove(color);
-    }
   };
 
   const isNotStarted = gameStatus === "notStarted";
@@ -120,17 +92,12 @@ function App() {
       <div>{isGameOver && "Game Over"}</div>
       <div>{isNotStarted && "Press Start Button"}</div>
       <GameArea>
-        {boxColors.map((color, index) => (
-          /**
-           * Adjust the rendering after the changes above.
-           */
+        {boxColors.map((color) => (
           <Box
-            isActive={index === activeBoxIndex}
+            isActive={color === activeBoxColor}
             color={color}
             disabled={!isUserTurn}
-            onClick={() => {
-              clickBox(index, color);
-            }}
+            onClick={() => handleMove(color)}
           ></Box>
         ))}
       </GameArea>
