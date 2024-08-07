@@ -16,6 +16,8 @@ import StartNextRoundProblem from "./exercises/08.start-next-round/problem";
 import StartNextRoundSolution from "./exercises/08.start-next-round/solution";
 import ActiveBoxColorProblem from "./exercises/09.active-box-color/problem";
 import ActiveBoxColorSolution from "./exercises/09.active-box-color/solution";
+import SimplifyHandleMoveProblem from "./exercises/10.simplify-handle-move/problem";
+import SimplifyHandleMoveSolution from "./exercises/10.simplify-handle-move/solution";
 
 const examples = [
   {
@@ -107,6 +109,16 @@ const examples = [
     name: "09.Active Box Color - Solution",
     url: "09.active-box-color/solution",
     Component: ActiveBoxColorSolution
+  },
+  {
+    name: "10.Simplify handleMove - Problem",
+    url: "10.simplify-handle-move/problem",
+    Component: SimplifyHandleMoveProblem
+  },
+  {
+    name: "10.Simplify handleMove - Solution",
+    url: "10.simplify-handle-move/solution",
+    Component: SimplifyHandleMoveSolution
   },
 ];
 
