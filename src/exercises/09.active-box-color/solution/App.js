@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Box, GameArea } from "./components";
-import { generateCombination, wait, boxColors, FADE_TRANSITION, INITIAL_NUMBER_OF_ROUNDS, MAX_NUMBER_OF_ROUNDS } from "./utils";
+import {
+  generateCombination,
+  wait,
+  boxColors,
+  FADE_TRANSITION,
+  INITIAL_NUMBER_OF_ROUNDS,
+  MAX_NUMBER_OF_ROUNDS
+} from "./utils";
 
 function App() {
   /**
@@ -10,6 +17,9 @@ function App() {
   const [gameStatus, setGameStatus] = useState("notStarted");
   const [gameCombination, setGameCombination] = useState([]);
   const [numberOfRounds, setNumberOfRounds] = useState(null);
+  /**
+   * ✨ Instead of storing the index of the active box, store the color in `activeBoxColor` state.
+   */
   const [activeBoxIndex, setActiveBoxIndex] = useState(null);
 
   const resetStates = () => {
@@ -19,7 +29,7 @@ function App() {
   };
 
   const startNextRound = async () => {
-    const newNumberOfRounds = numberOfRounds ? numberOfRounds + 1 : INITIAL_NUMBER_OF_ROUNDS
+    const newNumberOfRounds = numberOfRounds ? numberOfRounds + 1 : INITIAL_NUMBER_OF_ROUNDS;
     setNumberOfRounds(newNumberOfRounds);
 
     const nextCombination = generateCombination(newNumberOfRounds);
@@ -28,6 +38,9 @@ function App() {
     await showGameCombination(nextCombination);
   };
 
+  /**
+   * ✨ This function should receive the color of the box to be activated.
+   */
   async function performBoxTransition(index) {
     setActiveBoxIndex(index);
     await wait(FADE_TRANSITION);
@@ -73,7 +86,16 @@ function App() {
       return;
     }
 
+    /**
+     * ✨ No need for the colorIndex variable anymore.
+     */
     const colorIndex = boxColors.indexOf(color);
+
+    /**
+     * ✨ The `clickBox` function shows the transition of the box and then calls the `handleMove` function. All the
+     * other checks are not needed anymore. Move this line to the top of `handleMove` function and after that remove
+     * `clickBox` function and call the `handleMove` function directly.
+     */
     await performBoxTransition(colorIndex);
 
     if (color) {
@@ -99,6 +121,9 @@ function App() {
       <div>{isNotStarted && "Press Start Button"}</div>
       <GameArea>
         {boxColors.map((color, index) => (
+          /**
+           * Adjust the rendering after the changes above.
+           */
           <Box
             isActive={index === activeBoxIndex}
             color={color}
