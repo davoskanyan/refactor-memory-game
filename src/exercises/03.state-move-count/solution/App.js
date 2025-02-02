@@ -79,14 +79,15 @@ function App() {
     if (index === activeBoxIndex) {
       return;
     }
-    if (color) {
-      handleMove(color);
-    }
 
     setActiveBoxIndex(index);
 
     setTimeout(() => {
       setActiveBoxIndex(null);
+
+      if (color) {
+        handleMove(color);
+      }
     }, FADE_TRANSITION);
   };
 

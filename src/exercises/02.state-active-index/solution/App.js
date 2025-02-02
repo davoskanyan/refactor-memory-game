@@ -77,16 +77,17 @@ function App() {
     if (index === activeBoxIndex) {
       return;
     }
-    if (color) {
-      setPlayerCombination([...playerCombination, color]);
-      const count = moveCount + 1;
-      setMoveCount(count);
-    }
 
     setActiveBoxIndex(index);
 
     setTimeout(() => {
       setActiveBoxIndex(null);
+
+      if (color) {
+        setPlayerCombination([...playerCombination, color]);
+        const count = moveCount + 1;
+        setMoveCount(count);
+      }
     }, FADE_TRANSITION);
   };
 

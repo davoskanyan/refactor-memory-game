@@ -85,9 +85,6 @@ function App() {
     if (index === activeBoxIndex) {
       return;
     }
-    if (color) {
-      handleMove(color);
-    }
 
     /**
      * ✨ Call the `performBoxTransition` function here. Ensure the transition completes before calling the `handleMove`
@@ -97,6 +94,10 @@ function App() {
 
     setTimeout(() => {
       setActiveBoxIndex(null);
+
+      if (color) {
+        handleMove(color);
+      }
     }, FADE_TRANSITION);
   };
 

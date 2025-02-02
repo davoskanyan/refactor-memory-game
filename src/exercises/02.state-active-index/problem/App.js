@@ -81,11 +81,6 @@ function App() {
     if (boxStates[index]) {
       return;
     }
-    if (color) {
-      setPlayerCombination([...playerCombination, color]);
-      const count = moveCount + 1;
-      setMoveCount(count);
-    }
 
     setBoxStates((prevStates) => {
       const newStates = [...prevStates];
@@ -99,6 +94,12 @@ function App() {
         newStates[index] = false;
         return newStates;
       });
+
+      if (color) {
+        setPlayerCombination([...playerCombination, color]);
+        const count = moveCount + 1;
+        setMoveCount(count);
+      }
     }, FADE_TRANSITION);
   };
 

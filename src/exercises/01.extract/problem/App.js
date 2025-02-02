@@ -5,18 +5,19 @@ import styled from "styled-components";
  * ✨Move all components, utilities, and constants to separate files.
  */
 const GameArea = styled.div`
-    height: 200px;
-    width: 100px;
+    height: 220px;
+    width: 120px;
     border: "1px solid black";
 `;
 
 const Box = styled.div`
-    width: 50%;
-    height: 50%;
+    width: 50px;
+    height: 100px;
     background-color: ${(props) => props.color};
     text-align: center;
-    opacity: ${(props) => (props.isActive ? "50%" : "100%")};
+    opacity: ${(props) => (props.isActive ? "30%" : "100%")};
     display: inline-block;
+    border: 3px solid ${(props) => (props.isActive ? 'black' : props.color)};
 `;
 
 const FADE_TRANSITION = 500;
@@ -126,11 +127,6 @@ function App() {
     if (boxStates[index]) {
       return;
     }
-    if (color) {
-      setPlayerCombination([...playerCombination, color]);
-      const count = moveCount + 1;
-      setMoveCount(count);
-    }
 
     setBoxStates((prevStates) => {
       const newStates = [...prevStates];
@@ -144,6 +140,12 @@ function App() {
         newStates[index] = false;
         return newStates;
       });
+
+      if (color) {
+        setPlayerCombination([...playerCombination, color]);
+        const count = moveCount + 1;
+        setMoveCount(count);
+      }
     }, FADE_TRANSITION);
   };
 

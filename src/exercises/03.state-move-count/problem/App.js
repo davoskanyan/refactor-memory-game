@@ -83,19 +83,20 @@ function App() {
     if (index === activeBoxIndex) {
       return;
     }
-    if (color) {
-      setPlayerCombination([...playerCombination, color]);
-      const count = moveCount + 1;
-      /**
-       * ✨ Instead of updating the `moveCount` state to trigger the effect, call the function directly from here.
-       */
-      setMoveCount(count);
-    }
 
     setActiveBoxIndex(index);
 
     setTimeout(() => {
       setActiveBoxIndex(null);
+
+      if (color) {
+        setPlayerCombination([...playerCombination, color]);
+        const count = moveCount + 1;
+        /**
+         * ✨ Instead of updating the `moveCount` state to trigger the effect, call the function directly from here.
+         */
+        setMoveCount(count);
+      }
     }, FADE_TRANSITION);
   };
 
