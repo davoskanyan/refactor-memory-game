@@ -18,6 +18,8 @@ import ActiveBoxColorProblem from "./exercises/09.active-box-color/problem";
 import ActiveBoxColorSolution from "./exercises/09.active-box-color/solution";
 import SimplifyHandleMoveProblem from "./exercises/10.simplify-handle-move/problem";
 import SimplifyHandleMoveSolution from "./exercises/10.simplify-handle-move/solution";
+import ExtractUiProblem from "./exercises/11.extract-ui/problem";
+import ExtractUiSolution from "./exercises/11.extract-ui/solution";
 
 const examples = [
   {
@@ -119,6 +121,16 @@ const examples = [
     name: "10.Simplify handleMove - Solution",
     url: "10.simplify-handle-move/solution",
     Component: SimplifyHandleMoveSolution
+  },
+  {
+    name: "11.Extract UI - Problem",
+    url: "11.extract-ui/problem",
+    Component: ExtractUiProblem
+  },
+  {
+    name: "11.Extract UI - Solution",
+    url: "11.extract-ui/solution",
+    Component: ExtractUiSolution
   },
 ];
 
